@@ -1,0 +1,6 @@
+{
+  "name": "Faraid Inheritance Calculator",
+  "description": "An Islamic inheritance (Faraidh) calculator ensuring Sharia-compliant wealth distribution calculations, offering family tree visualizations, detailed breakdowns, and printable PDF reports.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

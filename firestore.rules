@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidScenario(data) {
+      return data.userId is string 
+        && data.title is string && data.title.size() <= 200
+        && data.deceasedName is string && data.deceasedName.size() <= 100
+        && (data.deceasedGender == 'M' || data.deceasedGender == 'F')
+        && data.grossValue is number
+        && data.funeralExpenses is number
+        && data.debtsValue is number
+        && data.willsValue is number
+        && data.currency is string && data.currency.size() <= 10
+        && data.relatives is list && data.relatives.size() <= 100;
+    }
+
+    match /scenarios/{scenarioId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(scenarioId) && isValidScenario(incoming()) && incoming().userId == request.auth.uid && incoming().createdAt == request.time;
+      allow update: if isSignedIn() && isValidId(scenarioId) && isValidScenario(incoming()) && incoming().userId == request.auth.uid && existing().userId == request.auth.uid && incoming().updatedAt == request.time;
+      allow delete: if isSignedIn() && isValidId(scenarioId) && existing().userId == request.auth.uid;
+    }
+  }
+}

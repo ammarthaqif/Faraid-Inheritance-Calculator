@@ -1,0 +1,69 @@
+{
+  "entities": {
+    "Scenario": {
+      "title": "Inheritance Scenario",
+      "description": "A saved family inheritance and estate scenario",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner UID of the scenario"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title or summary of the scenario"
+        },
+        "deceasedName": {
+          "type": "string",
+          "description": "Deceased individual's name"
+        },
+        "deceasedGender": {
+          "type": "string",
+          "enum": ["M", "F"],
+          "description": "Gender of the deceased"
+        },
+        "grossValue": {
+          "type": "number",
+          "description": "Gross asset valuation"
+        },
+        "funeralExpenses": {
+          "type": "number",
+          "description": "Funeral costs"
+        },
+        "debtsValue": {
+          "type": "number",
+          "description": "Total outstanding debts"
+        },
+        "willsValue": {
+          "type": "number",
+          "description": "Wills/bequests value"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Selected currency code"
+        },
+        "relatives": {
+          "type": "array",
+          "description": "Array of registered family members"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["userId", "title", "deceasedName", "deceasedGender", "grossValue", "funeralExpenses", "debtsValue", "willsValue", "currency", "relatives"]
+    }
+  },
+  "firestore": {
+    "/scenarios/{scenarioId}": {
+      "schema": "Scenario",
+      "description": "Collection of saved scenarios"
+    }
+  }
+}
